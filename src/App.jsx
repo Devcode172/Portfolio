@@ -113,14 +113,14 @@ function App() {
               {orbitTech.map((tech, index) => (
                 <div
                   key={tech}
-                  className="orbit-badge"
+                  className="orbit-item"
                   style={{
                     '--angle': `${(360 / orbitTech.length) * index}deg`,
                     '--counter-angle': `${(360 / orbitTech.length) * index * -1}deg`,
                     '--entry-delay': `${index * 90}ms`,
                   }}
                 >
-                  {tech}
+                  <div className="orbit-badge">{tech}</div>
                 </div>
               ))}
             </div>
@@ -166,17 +166,14 @@ function App() {
             </div>
             <div className="about-highlights">
               <div className="scroll-reveal" style={{ '--reveal-delay': '90ms' }}>
-                <span>01</span>
                 <strong>Frontend polish</strong>
                 <p>Clean interfaces, smooth interactions, and responsive layouts.</p>
               </div>
               <div className="scroll-reveal" style={{ '--reveal-delay': '180ms' }}>
-                <span>02</span>
                 <strong>Backend logic</strong>
                 <p>Reliable APIs, data flow, and maintainable application structure.</p>
               </div>
               <div className="scroll-reveal" style={{ '--reveal-delay': '270ms' }}>
-                <span>03</span>
                 <strong>Product thinking</strong>
                 <p>Practical decisions that turn ideas into useful web experiences.</p>
               </div>
