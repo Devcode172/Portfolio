@@ -37,7 +37,7 @@ const projects = [
 
 const skills = ['React', 'TypeScript', 'UI Systems', 'Performance', 'Accessibility'];
 const roles = ['Full Stack Developer'];
-const orbitTech = ['ReactJS', 'NodeJS', 'NextJS', 'PostgreSQL', 'ExpressJS', 'TailwindCSS', 'DaisyUI', 'Zustand'];
+const orbitTech = ['ReactJS', 'NodeJS', 'NextJS', 'PostgreSQL', 'ExpressJS', 'TailwindCSS', 'DaisyUI', 'Zustand' , 'socket.io'];
 
 function App() {
   const [displayText, setDisplayText] = useState('');
@@ -73,6 +73,29 @@ function App() {
     return () => window.clearTimeout(timeoutId);
   }, []);
 
+  useEffect(() => {
+    const revealElements = document.querySelectorAll('.scroll-reveal');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.18,
+        rootMargin: '0px 0px -60px',
+      }
+    );
+
+    revealElements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="app-shell">
       <header className="hero" id="home">
@@ -94,6 +117,7 @@ function App() {
                   style={{
                     '--angle': `${(360 / orbitTech.length) * index}deg`,
                     '--counter-angle': `${(360 / orbitTech.length) * index * -1}deg`,
+                    '--entry-delay': `${index * 90}ms`,
                   }}
                 >
                   {tech}
@@ -125,11 +149,11 @@ function App() {
 
       <main>
         <section className="section" id="about">
-          <div className="section-heading">
+          <div className="section-heading scroll-reveal">
             <h2>About Me</h2>
           </div>
-          <div className="about-panel">
-            <div className="about-copy">
+          <div className="about-panel scroll-reveal">
+            <div className="about-copy scroll-reveal">
               <p>
                 I am a Full Stack Developer who builds modern, responsive, and user-friendly web
                 applications with strong attention to detail, clean architecture, and thoughtful
@@ -141,18 +165,15 @@ function App() {
               </p>
             </div>
             <div className="about-highlights">
-              <div>
-                <span>01</span>
+              <div className="scroll-reveal" style={{ '--reveal-delay': '90ms' }}>
                 <strong>Frontend polish</strong>
                 <p>Clean interfaces, smooth interactions, and responsive layouts.</p>
               </div>
-              <div>
-                <span>02</span>
+              <div className="scroll-reveal" style={{ '--reveal-delay': '180ms' }}>
                 <strong>Backend logic</strong>
                 <p>Reliable APIs, data flow, and maintainable application structure.</p>
               </div>
-              <div>
-                <span>03</span>
+              <div className="scroll-reveal" style={{ '--reveal-delay': '270ms' }}>
                 <strong>Product thinking</strong>
                 <p>Practical decisions that turn ideas into useful web experiences.</p>
               </div>
@@ -161,12 +182,16 @@ function App() {
         </section>
 
         <section className="section" id="projects">
-          <div className="section-heading">
+          <div className="section-heading scroll-reveal">
             <h2>Recent projects that balance beauty and function.</h2>
           </div>
           <div className="projects-grid">
-            {projects.map((project) => (
-              <article className="project-card" key={project.title}>
+            {projects.map((project, index) => (
+              <article
+                className="project-card scroll-reveal"
+                key={project.title}
+                style={{ '--reveal-delay': `${index * 90}ms` }}
+              >
                 <h3>{project.title}</h3>
                 <p>{project.description}</p>
                 <div className="tags">
@@ -183,8 +208,8 @@ function App() {
           </div>
         </section>
 
-        <section className="section contact" id="contact">
-          <div className="contact-copy">
+        <section className="section contact scroll-reveal" id="contact">
+          <div className="contact-copy scroll-reveal">
             <h2>Ready to build something meaningful?</h2>
             <p>
               Send me a quick message and I will get back to you for collaborations,
@@ -192,7 +217,8 @@ function App() {
             </p>
           </div>
           <form
-            className="contact-form"
+            className="contact-form scroll-reveal"
+            style={{ '--reveal-delay': '120ms' }}
             action="https://formsubmit.co/abdulbasit7151x@gmail.com"
             method="POST"
           >
