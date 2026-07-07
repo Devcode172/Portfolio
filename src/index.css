@@ -129,7 +129,9 @@ a {
   transform: translate(-50%, -50%) rotate(var(--angle));
   transform-origin: center;
   will-change: transform, opacity;
-  animation: orbit 16s linear infinite;
+  animation:
+    enter-orbit 800ms cubic-bezier(0.2, 0.9, 0.22, 1) both,
+    orbit 16s linear 800ms infinite;
 }
 
 .orbit-badge {
@@ -148,7 +150,7 @@ a {
   letter-spacing: 0.02em;
   backdrop-filter: blur(10px);
   will-change: transform;
-  animation: keep-badge-upright 16s linear infinite;
+  animation: keep-badge-upright 16s linear 800ms infinite;
 }
 
 .hero-copy {
