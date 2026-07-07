@@ -41,6 +41,8 @@ const orbitTech = ['ReactJS', 'NodeJS', 'NextJS', 'PostgreSQL', 'ExpressJS', 'Ta
 
 function App() {
   const [displayText, setDisplayText] = useState('');
+  const [formStatus, setFormStatus] = useState('idle');
+  const [formMessage, setFormMessage] = useState('');
 
   useEffect(() => {
     let currentIndex = 0;
@@ -95,6 +97,37 @@ function App() {
 
     return () => observer.disconnect();
   }, []);
+
+  const handleContactSubmit = async (event) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    setFormStatus('submitting');
+    setFormMessage('');
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Form submission failed');
+      }
+
+      form.reset();
+      setFormStatus('success');
+      setFormMessage('Message sent successfully.');
+    } catch {
+      setFormStatus('error');
+      setFormMessage('Message could not be sent. Please try again.');
+    }
+  };
 
   return (
     <div className="app-shell">
@@ -219,8 +252,9 @@ function App() {
           <form
             className="contact-form scroll-reveal"
             style={{ '--reveal-delay': '120ms' }}
-            action="https://formsubmit.co/abdulbasit7151x@gmail.com"
+            action="https://formsubmit.co/ajax/abdulbasit7151x@gmail.com"
             method="POST"
+            onSubmit={handleContactSubmit}
           >
             <input type="hidden" name="_subject" value="New portfolio contact message" />
             <input type="hidden" name="_template" value="table" />
@@ -242,9 +276,18 @@ function App() {
                 required
               ></textarea>
             </label>
-            <button className="btn primary contact-submit" type="submit">
-              Send Message
+            <button
+              className="btn primary contact-submit"
+              type="submit"
+              disabled={formStatus === 'submitting'}
+            >
+              {formStatus === 'submitting' ? 'Sending...' : 'Send Message'}
             </button>
+            {formMessage && (
+              <p className={`form-status ${formStatus}`} role="status">
+                {formMessage}
+              </p>
+            )}
           </form>
         </section>
       </main>
