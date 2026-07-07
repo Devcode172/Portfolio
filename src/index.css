@@ -120,12 +120,20 @@ a {
   z-index: 2;
 }
 
-.orbit-badge {
+.orbit-item {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) rotate(var(--angle)) translateX(var(--orbit-radius))
-    rotate(var(--counter-angle));
+  z-index: 1;
+  opacity: 0.9;
+  transform: translate(-50%, -50%) rotate(var(--angle));
+  transform-origin: center;
+  will-change: transform, opacity;
+  animation: orbit 16s linear infinite;
+}
+
+.orbit-badge {
+  transform: translateX(var(--orbit-radius));
   display: grid;
   place-items: center;
   width: 92px;
@@ -139,12 +147,8 @@ a {
   text-align: center;
   letter-spacing: 0.02em;
   backdrop-filter: blur(10px);
-  z-index: 1;
-  opacity: 0;
   will-change: transform;
-  animation:
-    enter-orbit 900ms cubic-bezier(0.2, 0.9, 0.22, 1) var(--entry-delay) both,
-    orbit 16s linear calc(var(--entry-delay) + 900ms) infinite;
+  animation: keep-badge-upright 16s linear infinite;
 }
 
 .hero-copy {
@@ -473,25 +477,31 @@ h2 {
 @keyframes enter-orbit {
   from {
     opacity: 0;
-    transform: translate(calc(-50% - 70vw), -50%) scale(0.9);
+    transform: translate(-50%, -50%) rotate(var(--angle)) scale(0.9);
   }
   to {
     opacity: 0.9;
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateX(var(--orbit-radius))
-      rotate(var(--counter-angle));
+    transform: translate(-50%, -50%) rotate(var(--angle)) scale(1);
   }
 }
 
 @keyframes orbit {
   from {
     opacity: 0.9;
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateX(var(--orbit-radius))
-      rotate(var(--counter-angle));
+    transform: translate(-50%, -50%) rotate(var(--angle));
   }
   to {
     opacity: 0.9;
-    transform: translate(-50%, -50%) rotate(calc(var(--angle) + 360deg))
-      translateX(var(--orbit-radius)) rotate(calc(var(--counter-angle) - 360deg));
+    transform: translate(-50%, -50%) rotate(calc(var(--angle) + 360deg));
+  }
+}
+
+@keyframes keep-badge-upright {
+  from {
+    transform: translateX(var(--orbit-radius)) rotate(var(--counter-angle));
+  }
+  to {
+    transform: translateX(var(--orbit-radius)) rotate(calc(var(--counter-angle) - 360deg));
   }
 }
 
@@ -560,7 +570,12 @@ h2 {
 
   .portrait-stage {
     width: min(320px, 100%);
-    --orbit-radius: clamp(96px, 31vw, 118px);
+    --orbit-radius: clamp(104px, 33vw, 122px);
+  }
+
+  .portrait-image {
+    width: 80%;
+    height: 72%;
   }
 
   .orbit-badge {

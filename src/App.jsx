@@ -113,14 +113,14 @@ function App() {
               {orbitTech.map((tech, index) => (
                 <div
                   key={tech}
-                  className="orbit-badge"
+                  className="orbit-item"
                   style={{
                     '--angle': `${(360 / orbitTech.length) * index}deg`,
                     '--counter-angle': `${(360 / orbitTech.length) * index * -1}deg`,
                     '--entry-delay': `${index * 90}ms`,
                   }}
                 >
-                  {tech}
+                  <div className="orbit-badge">{tech}</div>
                 </div>
               ))}
             </div>
